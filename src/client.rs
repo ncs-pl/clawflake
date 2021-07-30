@@ -1,3 +1,5 @@
+// !Sample implementation of a gRPC Client for Clawflake, not meant to production!
+
 use clawflake::clawflake_client::ClawflakeClient;
 use clawflake::IdRequest;
 

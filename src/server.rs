@@ -15,6 +15,10 @@ pub mod clawflake {
 mod id_worker;
 use id_worker::IdWorker;
 
+const EPOCH: i64 = 1_564_790_400_000; // todo(n1c00o): find a good custom epoch for production cuz its fun
+const WORKER_ID: i64 = 0; // todo(n1c00o): need a way to detect the worker id from Kubernetes
+const DATACENTER_ID: i64 = 0; // todo(n1c00o): need a way to detect the data center id from idk
+
 #[derive(Debug, Default)]
 pub struct MyClawflakeService {
 }
@@ -27,7 +31,7 @@ impl Clawflake for MyClawflakeService {
     ) -> Result<Response<IdReply>, Status> {
         info!("request on GetID");
 
-        let mut worker: IdWorker = IdWorker::new(1_564_790_400_000, 0, 0);
+        let mut worker: IdWorker = IdWorker::new(EPOCH, WORKER_ID, DATACENTER_ID);
 
         let reply: IdReply = clawflake::IdReply {
             id: format!("{}", worker.next_id()).into(),
@@ -49,7 +53,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // init tonic and IdWorker
-    let addr: SocketAddr = "[::1]:50051".parse()?;
+    let addr: SocketAddr = "[::1]:50051".parse()?; //todo(n1c00o): make sure we can manage addr, then make the Dockerfile
     let srv: MyClawflakeService = MyClawflakeService::default();
 
     println!("Service listening on {}", addr);
