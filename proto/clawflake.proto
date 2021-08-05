@@ -1,0 +1,12 @@
+syntax = "proto3";
+package clawflake;
+
+service Clawflake {
+    rpc GetID(IDRequest) returns (IDReply);
+}
+
+message IDRequest {}
+
+message IDReply {
+    string id = 1;
+}

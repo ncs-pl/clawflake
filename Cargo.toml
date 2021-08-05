@@ -1,0 +1,23 @@
+[package]
+name = "clawflake"
+version = "0.1.0"
+edition = "2018"
+
+[[bin]] # Bin to run the HelloWorld gRPC server
+name = "clawflake-server"
+path = "src/server.rs"
+
+[[bin]] # Bin to run the HelloWorld gRPC client
+name = "clawflake-client"
+path = "src/client.rs"
+
+[dependencies]
+chrono = "0.4.19"
+parking_lot = "0.11.1"
+tonic = "0.5"
+tonic-health = "0.4.0"
+prost = "0.8"
+tokio = { version = "1.0", features = ["macros", "rt-multi-thread"] }
+
+[build-dependencies]
+tonic-build = "0.5"
