@@ -1,11 +1,11 @@
 // !Sample implementation of a gRPC Client for Clawflake, not meant to production!
 
+pub mod clawflake {
+  tonic::include_proto!("clawflake");
+}
+
 use clawflake::clawflake_client::ClawflakeClient;
 use clawflake::IdRequest;
-
-pub mod clawflake {
-    tonic::include_proto!("clawflake");
-}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

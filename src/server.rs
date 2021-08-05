@@ -1,3 +1,4 @@
+use std::env;
 use std::net::SocketAddr;
 use std::process::exit;
 
@@ -5,19 +6,15 @@ use log::info;
 mod logger;
 use tonic::{transport::Server, Request, Response, Status};
 
+pub mod clawflake {
+  tonic::include_proto!("clawflake");
+}
+
 use clawflake::clawflake_server::{Clawflake, ClawflakeServer};
 use clawflake::{IdReply, IdRequest};
 
-pub mod clawflake {
-    tonic::include_proto!("clawflake");
-}
-
 mod id_worker;
 use id_worker::IdWorker;
-
-const EPOCH: i64 = 1_564_790_400_000; // todo(n1c00o): find a good custom epoch for production cuz its fun
-const WORKER_ID: i64 = 0; // todo(n1c00o): need a way to detect the worker id from Kubernetes
-const DATACENTER_ID: i64 = 0; // todo(n1c00o): need a way to detect the data center id from idk
 
 #[derive(Debug, Default)]
 pub struct MyClawflakeService {
@@ -31,7 +28,11 @@ impl Clawflake for MyClawflakeService {
     ) -> Result<Response<IdReply>, Status> {
         info!("request on GetID");
 
-        let mut worker: IdWorker = IdWorker::new(EPOCH, WORKER_ID, DATACENTER_ID);
+        let mut worker: IdWorker = IdWorker::new(
+          env::var("CLAWFLAKE_EPOCH").expect("Missing env `CLAWFLAKE_EPOCH`").parse::<i64>().unwrap(), 
+          env::var("CLAWFLAKE_WORKER_ID").expect("Missing env `CLAWFLAKE_WORKER_ID`").parse::<i64>().unwrap(),
+          env::var("CLAWFLAKE_DATACENTER_ID").expect("Missing env `CLAWFLAKE_DATACENTER_ID`").parse::<i64>().unwrap()
+        );
 
         let reply: IdReply = clawflake::IdReply {
             id: format!("{}", worker.next_id()).into(),
@@ -52,13 +53,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
       _ => {}
     }
 
+    // init tonic_health
+    let (mut health_reporter, health_service) = tonic_health::server::health_reporter();
+    health_reporter.set_serving::<ClawflakeServer<MyClawflakeService>>().await;
+
     // init tonic and IdWorker
-    let addr: SocketAddr = "[::1]:50051".parse()?; //todo(n1c00o): make sure we can manage addr, then make the Dockerfile
+    let addr: SocketAddr = "[::1]:50051".parse()?;
     let srv: MyClawflakeService = MyClawflakeService::default();
 
     println!("Service listening on {}", addr);
 
     Server::builder()
+        .add_service(health_service)
         .add_service(ClawflakeServer::new(srv))
         .serve(addr)
         .await?;
