@@ -14,17 +14,13 @@ An ID number is composed of:
 
 > You need to use the nightly toolchain!
 
-Build the container
-
-```sh
-docker build --tag clawflake:1.0 .
-```
-
 Run the container
 
 ```sh
-docker run -e CLAWFLAKE_EPOCH=<epoch> -e CLAWFLAKE_WORKER_ID=<worker_id> -e CLAWFLAKE_DATACENTER_ID=<datacenter_id> -p <host port>:50051 clawflake:1.0
+docker run -e CLAWFLAKE_EPOCH=<epoch> -e CLAWFLAKE_WORKER_ID=<worker_id> -e CLAWFLAKE_DATACENTER_ID=<datacenter_id> -p <host port>:50051 docker pull n1c00o/clawflake
 ```
+
+(or you can build from source)
 
 You can then create your client using [clawflake.rs](clawflake.rs) and start communicate with the service.
 
