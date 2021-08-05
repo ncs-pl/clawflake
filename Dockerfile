@@ -1,9 +1,9 @@
-FROM rust:1alpine3.14 AS build
-WORKDIR /tmp/clawflake
-COPY . ./
-RUN cargo build --bin clawflake-server --release
+FROM rustlang/rust:nightly-slim AS build
+WORKDIR /app
+COPY . /app
+RUN cargo build --release --bin clawflake-server
 
-FROM alpine:3.14
+FROM gcr.io/distroless/cc
 WORKDIR /app
 COPY --from=build /app/target/release/clawflake-server ./
 CMD [ "./clawflake-server" ]

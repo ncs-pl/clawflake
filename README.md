@@ -12,6 +12,8 @@ An ID number is composed of:
 
 ## Usage
 
+> You need to use the nightly toolchain!
+
 Build the container
 
 ```sh
