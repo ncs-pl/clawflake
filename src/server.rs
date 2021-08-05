@@ -1,17 +1,15 @@
-use std::env;
-use std::net::SocketAddr;
-
-use tonic::{transport::Server, Request, Response, Status};
-
 pub mod clawflake {
     tonic::include_proto!("clawflake");
 }
-
 use clawflake::clawflake_server::{Clawflake, ClawflakeServer};
 use clawflake::{IdReply, IdRequest};
 
 mod id_worker;
 use id_worker::IdWorker;
+
+use std::env;
+use std::net::SocketAddr;
+use tonic::{transport::Server, Request, Response, Status};
 
 #[derive(Debug, Default)]
 pub struct MyClawflakeService {}
