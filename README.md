@@ -1,6 +1,6 @@
 # Clawflake
 
-Clawflake is a Rust application which implements [Twitter's Snowflake](https://github.com/twitter-archive/snowflake/tree/snowflake-2010) and communicates using [gRPC](https://grpc.io/).
+Clawflake is a Rust application which implements [Twitter Snowflakes](https://github.com/twitter-archive/snowflake/tree/snowflake-2010) and communicates using [gRPC](https://grpc.io/).
 
 Snowflake ID numbers are 63 bits integers stored as `i64`.
 
