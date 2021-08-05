@@ -9,7 +9,7 @@ use clawflake::IdRequest;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "http://[::1]:50051";
+    let addr = "http://[::0]:50051";
 
     let mut client = ClawflakeClient::connect(addr).await?;
 

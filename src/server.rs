@@ -58,7 +58,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     health_reporter.set_serving::<ClawflakeServer<MyClawflakeService>>().await;
 
     // init tonic and IdWorker
-    let addr: SocketAddr = "[::1]:50051".parse()?;
+    let addr: SocketAddr = "[::0]:50051".parse()?;
     let srv: MyClawflakeService = MyClawflakeService::default();
 
     println!("Service listening on {}", addr);
