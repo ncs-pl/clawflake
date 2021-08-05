@@ -18,9 +18,7 @@ pub struct MyClawflakeService {}
 
 #[tonic::async_trait]
 impl Clawflake for MyClawflakeService {
-    async fn get_id(&self, request: Request<IdRequest>) -> Result<Response<IdReply>, Status> {
-        eprintln!("{:?}", &request);
-
+    async fn get_id(&self, _: Request<IdRequest>) -> Result<Response<IdReply>, Status> {
         let mut worker: IdWorker = IdWorker::new(
             env::var("CLAWFLAKE_EPOCH")
                 .expect("Missing env `CLAWFLAKE_EPOCH`")
@@ -56,13 +54,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr: SocketAddr = "[::0]:50051".parse()?;
     let srv: MyClawflakeService = MyClawflakeService::default();
 
-    println!("Service listening on {}", addr);
+    println!("Server listening on {}", addr);
 
     Server::builder()
         .add_service(health_service)
         .add_service(ClawflakeServer::new(srv))
         .serve(addr)
         .await?;
-
     Ok(())
 }
