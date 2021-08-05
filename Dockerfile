@@ -1,11 +1,6 @@
-FROM rust:alpine3.14 AS build
-RUN cargo install cargo-build-deps \
-  && cd /tmp \ 
-  && USER=root cargo new --bin clawflake
+FROM rust:1alpine3.14 AS build
 WORKDIR /tmp/clawflake
-COPY Cargo.toml Cargo.lock ./
-RUN cargo build-deps --release
-COPY src /tmp/clawflake/src
+COPY . ./
 RUN cargo build --bin clawflake-server --release
 
 FROM alpine:3.14
