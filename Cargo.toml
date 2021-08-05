@@ -13,8 +13,6 @@ path = "src/client.rs"
 
 [dependencies]
 chrono = "0.4.19"
-log = "0.4.14"
-serde_json = "1.0.66"
 parking_lot = "0.11.1"
 tonic = "0.5"
 tonic-health = "0.4.0"
