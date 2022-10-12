@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package n1c00o.clawflake.v2;
+
+import "google/api/http.proto";
+
+option java_package = "dev.n1c00o.clawflake.v2";
+option java_multiple_files = true;
+option java_outer_classname = "ClawflakeProto";
+option go_package = "n1c00o.dev/genproto/clawflake/v2";
+
+// The Clawflake Service.
+//
+// A simple service responsible to generate Clawflake ID numbers.
+service ClawflakeService {}
+
+// The content of a GenerateClawflake request.
+message GenerateClawflakeRequest {}
+
+message Clawflake {}
