@@ -1,0 +1,54 @@
+name: CI
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+jobs:
+  rust:
+    name: Rust CI
+    continue-on-error: true
+    timeout-minutes: 360
+    strategy:
+      matrix:
+        runs_on:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+    runs-on: ${{ matrix.runs_on }}
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout the repository
+      - uses: actions/cache@v3
+        name: Setup caching
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - uses: actions-rs/toolchain@v1
+        name: Install the Rust toolchain
+        with:
+          toolchain: nightly
+          override: true
+          components: clippy, rustfmt
+      - uses: actions-rs/clippy-check@v1
+        name: Style check
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features
+      - uses: actions-rs/cargo@v1
+        name: Run tests
+        with:
+          command: test
+          args: --workspace
+      - uses: actions-rs/cargo@v1
+        name: Build in release mode
+        with:
+          command: build
+          args: --workspace --release
