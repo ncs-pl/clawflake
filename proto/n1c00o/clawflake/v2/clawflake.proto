@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package n1c00o.clawflake.v2;
+
+import "google/api/annotations.proto";
+import "google/api/http.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_package = "dev.n1c00o.clawflake.v2";
+option java_multiple_files = true;
+option java_outer_classname = "ClawflakeProto";
+option go_package = "n1c00o.dev/genproto/clawflake/v2";
+
+// The Clawflake Service.
+//
+// A simple service responsible to generate Clawflake ID numbers.
+service ClawflakeService {
+  // Generates a Clawflake ID number.
+  rpc GenerateClawflake(GenerateClawflakeRequest) returns (GenerateClawflakeResponse) {
+    option (google.api.http) = {
+      post: "/v2/clawflakes:generate"
+      body: "*"
+    };
+  }
+
+  // Parses a Clawflake ID number.
+  rpc DecomposeClawflake(DecomposeClawflakeRequest) returns (DecomposeClawflakeResponse) {
+    option (google.api.http) = {
+      post: "/v2/clawflakes/{clawflake=*}:decompose"
+      body: "*"
+    };
+  }
+}
+
+// The content of a GenerateClawflake request.
+message GenerateClawflakeRequest {}
+
+// The content of a GenerateClawflake response.
+message GenerateClawflakeResponse {
+  // The generated clawflake id number.
+  string clawflake = 1;
+}
+
+// The content of a DecomposeClawflake request.
+message DecomposeClawflakeRequest {
+  // The clawflake ID number.
+  string clawflake = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// The content of a DecomposeClawflake response.
+message DecomposeClawflakeResponse {
+  // The timestamp composing the Clawflake ID number.
+  google.protobuf.Timestamp create_time = 1;
+
+  // The worker number composing the Clawflake ID number.
+  // A number between 0 and 1024.
+  int32 worker = 2;
+
+  // The worker specific sequence number.
+  // A number between 0 and 4096.
+  int32 sequence = 3;
+}
