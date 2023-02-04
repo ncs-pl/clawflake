@@ -4,7 +4,7 @@ version = "1.0.0"
 edition = "2021"
 
 [dependencies]
-tokio = { version = "1.21.2", features = ["rt-multi-thread"] }
+tokio = { version = "1.24.2", features = ["rt-multi-thread"] }
 tonic = { version = "0.8.2", features = ["prost"] }
 prost = "0.11.0"
 prost-types = "0.11.1"
