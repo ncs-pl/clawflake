@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package nc0.clawflake.generator.v3;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+
+option csharp_namespace = "Nc0.Clawflake.Generator.V3";
+option go_package = "go.nc0.fr/clawflake/api/nc0/clawflake/generator/v3";
+option java_package = "fr.nc0.clawflake.generator.v3";
+option java_multiple_files = true;
+option java_outer_classname = "GeneratorProto";
+
+// The generator service allows requesting a new ID.
+service GeneratorService {
+  // Generate ID numbers.
+  rpc Generate(GenerateRequest) returns (GenerateResponse) {
+    option (google.api.http) = {
+      post: "/v3/ids:generate"
+      body: "*"
+    };
+    option (google.api.method_signature) = "amount";
+  }
+}
+
+// The request of a Generate RPC.
+message GenerateRequest {
+  // The amount of ID numbers to generate.
+  // The value should be in the interval [1, 4096].
+  // Values not in the interval will not be coerced and the request will be
+  // aborted.
+  uint32 amount = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// The response of a Generate RPC.
+message GenerateResponse {
+  // The generate ID numbers.
+  repeated string id_numbers = 1 [(google.api.field_behavior) = UNORDERED_LIST];
+}
