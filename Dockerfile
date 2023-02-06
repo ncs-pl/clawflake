@@ -1,9 +1,9 @@
-FROM rustlang/rust:nightly-slim AS build
-WORKDIR /app
-COPY . /app
-RUN cargo build --release --bin clawflake-server
+FROM golang:1.19 as builder
+WORKDIR /usr/src/clawflake
+COPY . .
+RUN make generator
 
-FROM gcr.io/distroless/cc
+FROM scratch
 WORKDIR /app
-COPY --from=build /app/target/release/clawflake-server ./
-CMD [ "./clawflake-server" ]
+COPY --from=builder /usr/src/clawflake/bin/generator ./
+CMD [ "./generator" ]
