@@ -25,7 +25,30 @@ The system can accept a maximum of **2^7 = 128 machines** for a given epoch.
 
 ## Usage
 
-TODO(nc0): Usage information, with or without containers.
+Before launching any worker, you need to determine the following information:
+
+- `epoch`: corresponds to the epoch workers will be using to generate IDs.
+- `machine`: the identifier for the machine.
+
+Due to the format of a Clawflake, you can only have 128 workers (machine IDs 
+between 0 and 127).
+
+You can compile the worker by running `make generator`.
+This will generate an executable named `generator` inside the `bin/` directory.
+
+You can then start the worker by running:
+
+```shell
+export MACHINE_ID=  # Worker ID, between 0 and 127
+export EPOCH=  # Epoch to use in ID generation
+./bin/generator -machine_id=$MACHINE_ID -epoch=$EPOCH -grpc_host=":5000"
+```
+
+> Use the flag `-help` to view the documentation for the flags.
+
+A worker should be running on port `5000`. You can try generating some 
+Clawflake ID numbers using the [Generator API](api/nc0/clawflake/generator/v3).
+A test client is available in [`cmd/testclient`](cmd/testclient/main.go).
 
 ## License
 
