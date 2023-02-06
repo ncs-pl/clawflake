@@ -1,27 +1,36 @@
 # Clawflake
 
-Clawflake is a Rust application which implements [Twitter Snowflakes](https://github.com/twitter-archive/snowflake/tree/snowflake-2010) and communicates using [gRPC](https://grpc.io/).
+Clawflake is a distributed ID number generation system inspired from Twitter 
+[Snowflake](https://github.com/twitter-archive/snowflake/tree/snowflake-2010).
 
-Snowflake ID numbers are 63 bits integers stored as `i64`.
+The goal of Clawflake is to be hosted as a distributed system with all workers
+being isolated from each others apart from the machine ID.
 
-An ID number is composed of:
+## Format
 
-- a timestamp (which is the difference between the current time and the epoch) [`41 bits`]
-- a configured machine ID (Data center ID and Worker ID) [`10 bits`]
-- a sequence number which rolls over every 4096 per machine (with protection to avoid rollover in the same ms) [`12 bits`]
+Unlike Snowflake, the composition of a Clawflake uses all 64 bits.
+
+- `time` (45 bits): The number of milliseconds passed from a configured epoch.
+- `sequence` (12 bits): A sequence number rolling out whenever required.
+- `machine` (7 bits): An identifier for the worker.
+
+Therefore, Clawflake ID numbers gives **2^45 - 1 = 1115.7 years of safety**
+from the configured epoch.  
+Thanks to the sequence number, a worker can handle **2^12 = 4069 generations**
+per milliseconds at peak.
+The system can accept a maximum of **2^7 = 128 machines** for a given epoch.
+
+> Since Clawflake uses the most significant bit, converting a Clawflake ID from
+> `uint64` to `int64` is not safe.
 
 ## Usage
 
-> You need to use the nightly toolchain!
+TODO(nc0): Usage information, with or without containers.
 
-Run the container
+## License
 
-```sh
-docker run -e CLAWFLAKE_EPOCH=<epoch> -e CLAWFLAKE_WORKER_ID=<worker_id> -e CLAWFLAKE_DATACENTER_ID=<datacenter_id> -p <host port>:50051 docker pull n1c00o/clawflake
-```
+Clawflake is governed by a BSD-style license that can be found in the 
+[LICENSE](LICENSE) file.
 
-(or you can build from source)
-
-You can then create your client using [clawflake.rs](clawflake.rs) and start communicate with the service.
-
-An example client can be found [here](src/client.rs)!
+Older codebase was licensed by the Apache License, Version 2.0, however none of
+the old code still exists.
