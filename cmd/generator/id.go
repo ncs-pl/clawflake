@@ -72,7 +72,7 @@ func (i *IdGenerator) NextId() (uint64, error) {
 
 	i.last_time = t
 	id = uint64(t)<<19 | uint64(*machineId)<<7 | uint64(i.seq)
-	l.Info("generated id number", zap.Uint64("generated_id", id))
+	l.Debug("generated id number", zap.Uint64("generated_id", id))
 
 	return id, nil
 }
@@ -83,6 +83,6 @@ func NewIdGenerator(l *zap.Logger) *IdGenerator {
 		seq:       0,
 		last_time: 0,
 		mu:        sync.Mutex{},
-		logger:    l,
+		logger:    l.Named("id_generator"),
 	}
 }
