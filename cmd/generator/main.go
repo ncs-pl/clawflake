@@ -2,16 +2,18 @@
 // Clawflake ID numbers.
 package main
 
-// TODO(nc0): Configure CI inside //.github/workflows.
-
 import (
 	"flag"
+	"net"
+
+	generatorpb "go.nc0.fr/clawflake/api/nc0/clawflake/generator/v3"
 
 	"go.uber.org/zap"
+	"google.golang.org/grpc"
 )
 
 var (
-	grpcHost *string = flag.String("grpc_host", "localhost:5000", "The host the gRPC server should listen to. Default to localhost:5000.")
+	grpcHost *string = flag.String("grpc_host", ":5000", "The host the gRPC server should listen to.")
 	devMode  *bool   = flag.Bool("dev", false, "Enables development mode, with more debug logs.")
 )
 
@@ -37,13 +39,20 @@ func main() {
 	}
 
 	i := NewIdGenerator(l)
-	l.Info("i time", zap.Int64("time", i.GetTime()))
 
-	id, err := i.NextId()
+	// gRPC server
+	lis, err := net.Listen("tcp", *grpcHost)
 	if err != nil {
-		l.Error("failed to generate id", zap.Error(err))
+		l.Error("failed to listen", zap.Error(err))
 		return
 	}
-	l.Info("i id", zap.Uint64("id", id))
+	defer lis.Close()
 
+	l.Info("server is ready")
+	gs := grpc.NewServer()
+	generatorpb.RegisterGeneratorServiceServer(gs, NewGeneratorServiceServer(i, l))
+	if err := gs.Serve(lis); err != nil {
+		l.Error("failed to serve gRPC", zap.Error(err))
+		return
+	}
 }
