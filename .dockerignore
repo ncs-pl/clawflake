@@ -1,7 +1,0 @@
-LICENSE
-*.md
-.git/
-.vscode/
-target/
-bin/
-clawflake.rs
