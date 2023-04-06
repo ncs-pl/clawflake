@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,15 +10,15 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/crab.png">
   <title>Clawflake | Distributed ID Generator</title>
   <!-- OpenGraph -->
-  <meta property="og:title" content="Clawflake"/>
+  <meta property="og:title" content="Clawflake" />
   <meta property="og:type" content="website" />
   <meta property="og:description" content="Clawflake is a distributed ID generator system." />
   <meta property="og:determiner" content="" />
-  <meta property="og:site_name" content="nc0" />
+  <meta property="og:site_name" content="Nicolas Paul" />
   <meta property="og:locale" content="en_US" />
   <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="n1c00o">
+  <meta name="twitter:site" content="@ncs_pl">
   <meta name="twitter:title" content="Clawflake">
   <meta name="twitter:description" content="Clawflake is a distributed ID generator system.">
   <!-- Hypermedia -->
@@ -28,15 +29,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages/bash.min.js"></script>
   <script>hljs.highlightAll();</script>
 </head>
+
 <body>
   <nav class="container">
     <ul>
       <li><img src="/assets/img/crab.png" alt="crab" height="80" width="80"></li>
     </ul>
     <ul>
-      <li><a href="https://nicolaspl.com" role="button">nc0</a></li>
+      <li><a href="https://nicolaspl.com" role="button">Nicolas Paul</a></li>
       <li><a href="/license.txt" role="button">
-        License</a></li>
+          License</a></li>
       <li><a href="https://github.com/n1c00o/clawflake" role="button">Source</a></li>
     </ul>
   </nav>
@@ -44,17 +46,17 @@
   <main class="container">
     <h1>Clawflake</h1>
 
-    <p>Clawflake is a distributed ID number generation system inspired from 
+    <p>Clawflake is a distributed ID number generation system inspired from
       <a href="https://github.com/twitter-archive/snowflake/tree/snowflake-2010">
         Twitter's Snowflake</a>.
     </p>
-    
-    <p> The goal of Clawflake is to be hosted as a distributed system with 
+
+    <p> The goal of Clawflake is to be hosted as a distributed system with
       all workers being isolated from each others apart from the machine ID.
     </p>
-    
+
     <h2>Format</h2>
-    
+
     <p>
       Unlike Snowflake, the composition of a Clawflake uses all 64 bits.
     </p>
@@ -93,28 +95,28 @@
     <p>
       Therefore, Clawflake ID numbers gives <mark>2<sup>45</sup> - 1 = 1115.7</mark> years
       of safety from the configured epoch.
-      Thanks to the sequence number, a worker can handle <mark>2<sup>12</sup> = 4069</mark> 
+      Thanks to the sequence number, a worker can handle <mark>2<sup>12</sup> = 4069</mark>
       generations per milliseconds at peak.
-      The system can accept a maximum of <mark>2<sup>7</sup> = 128</mark> machines for a 
+      The system can accept a maximum of <mark>2<sup>7</sup> = 128</mark> machines for a
       given epoch.
-    </p> 
-    
+    </p>
+
     <cite>
-      Since Clawflake uses the most significant bit, converting a Clawflake ID 
+      Since Clawflake uses the most significant bit, converting a Clawflake ID
       from <i>uint64</i> to <i>int64</i> is not safe.
     </cite>
-    
+
     <h2>Usage</h2>
 
     <p>
-      Before launching any worker, you need to determine the following 
+      Before launching any worker, you need to determine the following
       information:
 
-      <ul>
-        <li><i>epoch</i>: corresponds to the epoch workers will be using to 
-          generate IDs.</li>
-        <li><i>machine</i>: the identifier for the machine.</li>
-      </ul>
+    <ul>
+      <li><i>epoch</i>: corresponds to the epoch workers will be using to
+        generate IDs.</li>
+      <li><i>machine</i>: the identifier for the machine.</li>
+    </ul>
     </p>
 
     <p>
@@ -123,55 +125,56 @@
     </p>
 
     <p>
-      You can compile the worker by running 
-      
-      <pre><code lang="language-bash">make generator</code></pre>
+      You can compile the worker by running
 
-      This will generate an executable named <code>generator</code> inside the 
-      <code>bin</code> directory.
+    <pre><code lang="language-bash">make generator</code></pre>
+
+    This will generate an executable named <code>generator</code> inside the
+    <code>bin</code> directory.
     </p>
-    
+
     <p>
       You can then start the worker by running:
 
-      <pre><code class="language-bash">
+    <pre><code class="language-bash">
           export MACHINE_ID= # Worker ID, between 0 and 127
           export EPOCH= # Epoch to use in ID generation
           ./bin/generator -machine_id=$MACHINE_ID -epoch=$EPOCH -grpc_host=":5000"
         </code></pre>
 
-      <strong>TIP:</strong> Use the flag <code>-help</code> to view the
-      documentation for the flags.
+    <strong>TIP:</strong> Use the flag <code>-help</code> to view the
+    documentation for the flags.
     </p>
-    
+
     <p>
       A worker should be running on port <code>5000</code>. You can try generating some
       Clawflake ID numbers using the
-      <a href="https://github.com/n1c00o/clawflake/blob/master/api/nc0/clawflake/generator/v3/generator.proto">
+      <a href="https://github.com/n1c00o/clawflake/blob/master/api/nicolaspl/clawflake/generator/v3/generator.proto">
         Generator API
       </a>.
     </p>
 
-    <p>A test client is available in <a 
-      href="https://github.com/n1c00o/clawflake/blob/master/cmd/testclient/main.go"
-      >cmd/testclient/main.go</a>.</p>
-    
-   <h2>License</h2>
-    
+    <p>A test client is available in <a
+        href="https://github.com/n1c00o/clawflake/blob/master/cmd/testclient/main.go">cmd/testclient/main.go</a>.</p>
+
+    <h2>License</h2>
+
     <p>
       Clawflake is governed by a BSD-style license that can be found in the
       <a href="https://github.com/n1c00o/clawflake/blob/master/LICENSE"><code>LICENSE</code></a> file.
     </p>
-   
+
     <p>
-      Older codebase was licensed by the Apache License, Version 2.0, however 
+      Older codebase was licensed by the Apache License, Version 2.0, however
       none of the old code still exists.
     </p>
   </main>
 
   <footer class="container">
     <div class="grid">
-      <div><p><strong>© 2022. Nicolas "nc0" P.</strong></p></div>
+      <div>
+        <p><strong>© 2022. Nicolas "nc0" P.</strong></p>
+      </div>
       <div>
         <h3>Links</h3>
         <ul>
@@ -184,4 +187,5 @@
     </div>
   </footer>
 </body>
+
 </html>

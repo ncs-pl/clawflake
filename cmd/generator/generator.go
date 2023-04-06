@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	generatorpb "go.nc0.fr/clawflake/api/nc0/clawflake/generator/v3"
+	generatorpb "go.nicolaspl.com/clawflake/api/nicolaspl/clawflake/generator/v3"
 	"go.uber.org/zap"
 	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
@@ -47,7 +47,7 @@ func (g *GeneratorServiceServer) Generate(ctx context.Context, req *generatorpb.
 			s := status.New(codes.Internal, "internal error")
 			s.WithDetails(&errdetails.ErrorInfo{
 				Reason: "INTERNAL",
-				Domain: "generator.clawflake.nc0.fr",
+				Domain: "generator.clawflake.nicolaspl.fr",
 			})
 			return nil, s.Err()
 		}
