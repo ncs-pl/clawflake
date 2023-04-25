@@ -1,4 +1,4 @@
-module go.nicolaspl.com/clawflake
+module go.nc0.fr/clawflake
 
 go 1.19
 
