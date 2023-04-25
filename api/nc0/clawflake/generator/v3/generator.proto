@@ -1,14 +1,14 @@
 syntax = "proto3";
 
-package nicolaspl.clawflake.generator.v3;
+package nc0.clawflake.generator.v3;
 
 import "google/api/annotations.proto";
 import "google/api/client.proto";
 import "google/api/field_behavior.proto";
 
-option csharp_namespace = "NicolasPl.Clawflake.Generator.V3";
-option go_package = "go.nicolaspl.com/clawflake/api/nc0/clawflake/generator/v3";
-option java_package = "com.nicolaspl.clawflake.generator.v3";
+option csharp_namespace = "Nc0.Clawflake.Generator.V3";
+option go_package = "go.nc0.fr/clawflake/api/nc0/clawflake/generator/v3";
+option java_package = "fr.nc0.clawflake.generator.v3";
 option java_multiple_files = true;
 option java_outer_classname = "GeneratorProto";
 

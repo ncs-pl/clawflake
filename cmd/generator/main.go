@@ -6,7 +6,7 @@ import (
 	"flag"
 	"net"
 
-	generatorpb "go.nicolaspl.com/clawflake/api/nicolaspl/clawflake/generator/v3"
+	generatorpb "go.nc0.fr/clawflake/api/nc0/clawflake/generator/v3"
 
 	"go.uber.org/zap"
 	"google.golang.org/grpc"

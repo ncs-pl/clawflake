@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.12
-// source: api/nicolaspl/clawflake/generator/v3/generator.proto
+// source: api/nc0/clawflake/generator/v3/generator.proto
 
 package v3
 
@@ -36,7 +36,7 @@ func NewGeneratorServiceClient(cc grpc.ClientConnInterface) GeneratorServiceClie
 
 func (c *generatorServiceClient) Generate(ctx context.Context, in *GenerateRequest, opts ...grpc.CallOption) (*GenerateResponse, error) {
 	out := new(GenerateResponse)
-	err := c.cc.Invoke(ctx, "/nicolaspl.clawflake.generator.v3.GeneratorService/Generate", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/nc0.clawflake.generator.v3.GeneratorService/Generate", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func _GeneratorService_Generate_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nicolaspl.clawflake.generator.v3.GeneratorService/Generate",
+		FullMethod: "/nc0.clawflake.generator.v3.GeneratorService/Generate",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GeneratorServiceServer).Generate(ctx, req.(*GenerateRequest))
@@ -94,7 +94,7 @@ func _GeneratorService_Generate_Handler(srv interface{}, ctx context.Context, de
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var GeneratorService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "nicolaspl.clawflake.generator.v3.GeneratorService",
+	ServiceName: "nc0.clawflake.generator.v3.GeneratorService",
 	HandlerType: (*GeneratorServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -103,5 +103,5 @@ var GeneratorService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/nicolaspl/clawflake/generator/v3/generator.proto",
+	Metadata: "api/nc0/clawflake/generator/v3/generator.proto",
 }
